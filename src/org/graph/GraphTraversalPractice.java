@@ -84,12 +84,11 @@ public class GraphTraversalPractice {
         nodeQueue.add(source);
         while (!nodeQueue.isEmpty()) {
             Integer poll = nodeQueue.poll();
-            nodeQueue.addAll(graph.get(poll));
             if (seen.contains(poll)) continue;
             sol.add(poll);
             seen.add(poll);
+            nodeQueue.addAll(graph.get(poll));
         }
-
         return sol;
     }
 }
