@@ -1,4 +1,4 @@
-package org;
+package org.stack;
 
 public class BalancedParenthesis {
     static void main() {
