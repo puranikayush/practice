@@ -1,4 +1,4 @@
-package org.cache;
+package org.lrucache;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class LRUCache implements ILRUCache {
     public int get(String key) {
         if (cacheMap.containsKey(key)) {
             CacheNode cacheNode = cacheMap.get(key);
-            evict(cacheNode);
+            removeNode(cacheNode);
             addToFront(cacheNode);
             return cacheNode.value;
         }
@@ -37,10 +37,14 @@ public class LRUCache implements ILRUCache {
         if (cacheMap.containsKey(key_)) {
             CacheNode cacheNode = cacheMap.get(key_);
             cacheNode.value = value_;
+            removeNode(cacheNode);
             addToFront(cacheNode);
         } else {
             if (size == capacity) {
-                evict(tail.prev);
+                CacheNode prev = tail.prev;
+                removeNode(prev);
+                deleteCacheKey(prev.key);
+                size--;
             }
             CacheNode node = new CacheNode();
             node.key = key_;
@@ -53,8 +57,9 @@ public class LRUCache implements ILRUCache {
     }
 
     public void printCache() {
+        System.out.println("Size : "+size);
         CacheNode temp = head.next;
-        while(null!=temp){
+        while(temp!=tail){
             System.out.printf("(%s,%s)->", temp.key, temp.value);
             temp=temp.next;
         }
@@ -62,12 +67,15 @@ public class LRUCache implements ILRUCache {
     }
 
 
-    private void evict(CacheNode node) {
+    private void removeNode(CacheNode node) {
         CacheNode prev = node.prev;
         CacheNode next = node.next;
         prev.next = next;
         next.prev = prev;
-        cacheMap.remove(node.key);
+    }
+
+    public void deleteCacheKey(String key){
+        cacheMap.remove(key);
     }
 
     private void addToFront(CacheNode node) {
@@ -76,6 +84,7 @@ public class LRUCache implements ILRUCache {
         node.prev = head;
         node.next = next;
         next.prev = node;
+//        cacheMap.put(node.key,node);
     }
 
     private class CacheNode {

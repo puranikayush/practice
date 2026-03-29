@@ -1,6 +1,4 @@
-package org;
-
-import org.cache.LRUCache;
+package org.lrucache;
 
 public class LRUMain {
     static void main() {
@@ -11,12 +9,16 @@ public class LRUMain {
         cache.put("c", 3);
         cache.put("d", 4);
         cache.put("e", 5);
-        System.out.println(cache.get("a"));
+        System.out.println("get a: " + cache.get("a"));
         cache.printCache();
 
-        System.out.println(cache.get("c"));
+        System.out.println("evict c: " + cache.get("c"));
         cache.printCache();
 
-        cache.put("f",6);
+        cache.put("f", 6);
+        cache.printCache();
+
+        System.out.println("get d: " + cache.get("d"));
+        cache.printCache();
     }
 }

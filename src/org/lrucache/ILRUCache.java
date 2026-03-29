@@ -1,4 +1,4 @@
-package org.cache;
+package org.lrucache;
 
 public interface ILRUCache {
     int get(String key);
